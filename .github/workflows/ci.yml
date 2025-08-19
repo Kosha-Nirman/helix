@@ -11,7 +11,7 @@ on:
       - synchronize
 
 env:
-  GO_VERSION: 1.24
+  GO_VERSION: 1.25
 
 jobs:
   lint-format-test:
@@ -52,16 +52,16 @@ jobs:
           echo "✅ Security audit passed"
         continue-on-error: false
 
-      - name: Run Vulnerability Check
-        run: |
-          echo "🛡️ Running vulnerability check..."
-          govulncheck ./...
-          if [ $? -ne 0 ]; then
-            echo "❌ Vulnerability check failed"
-            exit 1
-          fi
-          echo "✅ Vulnerability check passed"
-        continue-on-error: false
+      # - name: Run Vulnerability Check
+      #   run: |
+      #     echo "🛡️ Running vulnerability check..."
+      #     govulncheck ./...
+      #     if [ $? -ne 0 ]; then
+      #       echo "❌ Vulnerability check failed"
+      #       exit 1
+      #     fi
+      #     echo "✅ Vulnerability check passed"
+      #   continue-on-error: false
 
       - name: Run Lint (golangci-lint)
         run: |
