@@ -39,99 +39,11 @@ jobs:
 
       - name: Install Linting Tools
         run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
+          | sh -s -- -b $(go env GOPATH)/bin latest
 
-      - name: Run Security Audit (gosec)
-        run: |
-          echo "🔒 Running gosec security audit..."
-          gosec -fmt sarif -out gosec-results.sarif ./...
-          if [ $? -ne 0 ]; then
-            echo "❌ Security audit failed"
-            exit 1
-          fi
-          echo "✅ Security audit passed"
-        continue-on-error: false
+      - name: Install dependencies
+        run: make install
 
-      # - name: Run Vulnerability Check
-      #   run: |
-      #     echo "🛡️ Running vulnerability check..."
-      #     govulncheck ./...
-      #     if [ $? -ne 0 ]; then
-      #       echo "❌ Vulnerability check failed"
-      #       exit 1
-      #     fi
-      #     echo "✅ Vulnerability check passed"
-      #   continue-on-error: false
-
-      - name: Run Lint (golangci-lint)
-        run: |
-          echo "🔍 Running linter..."
-          golangci-lint run --verbose --timeout=5m
-          if [ $? -ne 0 ]; then
-            echo "❌ Linting failed"
-            exit 1
-          fi
-          echo "✅ Linting passed"
-        continue-on-error: false
-
-      - name: Check Code Formatting
-        run: |
-          echo "🎨 Checking code formatting..."
-          unformatted=$(gofmt -l .)
-          if [ -n "$unformatted" ]; then
-            echo "❌ Code formatting issues found in:"
-            echo "$unformatted"
-            echo "Please run 'go fmt ./...' or 'make format' to fix formatting issues."
-            exit 1
-          fi
-          echo "✅ Code formatting is correct"
-        continue-on-error: false
-
-      - name: Check Imports
-        run: |
-          echo "📦 Checking imports..."
-          go install golang.org/x/tools/cmd/goimports@latest
-          unformatted=$(goimports -l .)
-          if [ -n "$unformatted" ]; then
-            echo "❌ Import formatting issues found in:"
-            echo "$unformatted"
-            echo "Please run 'goimports -w .' to fix import issues."
-            exit 1
-          fi
-          echo "✅ Import formatting is correct"
-        continue-on-error: false
-
-      - name: Run Go Vet
-        run: |
-          echo "🔍 Running go vet..."
-          go vet ./...
-          if [ $? -ne 0 ]; then
-            echo "❌ Go vet found issues"
-            exit 1
-          fi
-          echo "✅ Go vet passed"
-        continue-on-error: false
-
-      - name: Run Tests with Coverage
-        run: |
-          echo "🧪 Running tests with coverage..."
-          go test -v -race -covermode=atomic -coverprofile=coverage.out ./...
-          if [ $? -ne 0 ]; then
-            echo "❌ Tests failed"
-            exit 1
-          fi
-          echo "✅ Tests passed"
-
-      - name: Check Coverage Threshold
-        run: |
-          echo "📊 Checking coverage threshold..."
-          coverage=$(go tool cover -func=coverage.out | grep total | awk '{print substr($3, 1, length($3)-1)}')
-          threshold=80
-          echo "Current coverage: ${coverage}%"
-          echo "Required threshold: ${threshold}%"
-          if (( $(echo "$coverage < $threshold" | bc -l) )); then
-            echo "❌ Coverage ${coverage}% is below threshold ${threshold}%"
-            echo "Please add more tests to meet the coverage requirement."
-            exit 1
-          fi
-          echo "✅ Coverage threshold met: ${coverage}%"
+      - name: Run CI pipeline
+        run: make ci
