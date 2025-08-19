@@ -16,7 +16,7 @@ repos:
     args: ['--maxkb=500']
 
 -   repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v3.4.0
+    rev: v4.2.0
     hooks:
     - id: conventional-pre-commit
     stages: [commit-msg]
@@ -25,16 +25,16 @@ repos:
     rev: v0.5.1
     hooks:
     - id: go-fmt
+    - id: go-vet
+    - id: go-lint
     - id: go-imports
-    - id: go-vet-mod
-    - id: go-mod-tidy
+    - id: validate-toml
+    - id: no-go-testing
+    - id: golangci-lint
+    - id: go-critic
     - id: go-unit-tests
-    - id: go-build-mod
-    - id: go-mod-vendor-check
+    - id: go-build
+    - id: go-mod-tidy
+    - id: go-cyclo
+    args: [-over=15]
     exclude: '^vendor/'
-
--   repo: https://github.com/securecodewarrior/github-action-add-sarif
-    rev: v1.1.2
-    hooks:
-    - id: sarif-fmt
-    files: '\.sarif$'
