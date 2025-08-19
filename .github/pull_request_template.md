@@ -33,7 +33,7 @@ Fixes #IssueNumber
 <!-- Add any additional information or context that may be relevant for reviewers -->
 
 <!-- General Note -->
-> [!NOTE]  
+> [!NOTE]
 > Highlights information that users should take into account, even when skimming.
 
 <!-- General Tip -->
@@ -41,11 +41,11 @@ Fixes #IssueNumber
 > Optional information to help a user be more successful.
 
 <!-- Important Message -->
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > Crucial information necessary for users to succeed.
 
 <!-- Warning Message -->
-> [!WARNING]  
+> [!WARNING]
 > Critical content demanding immediate user attention due to potential risks.
 
 <!-- Critical message -->
