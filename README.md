@@ -55,7 +55,7 @@ Ensure you have the following installed:
 3. **Run the application:**
 
    ```bash
-   go run cmd/src/main.go
+   go run src/cmd/main.go
    ```
 
 4. **Or use Make commands:**
