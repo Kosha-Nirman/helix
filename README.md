@@ -32,7 +32,7 @@
 
 Ensure you have the following installed:
 
-- **Go**: v1.24 or later
+- **Go**: v1.25 or later
 - **Make**: For running build commands (optional)
 
 ---
